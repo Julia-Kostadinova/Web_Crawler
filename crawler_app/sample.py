@@ -43,5 +43,5 @@ for product in products:
     print(f"**Модел:** {model}")
     print(f"**Размер на екрана:** {screen_size}")
     print(f"**Цена:** {price}")
-    print("-" * 40)
+    print("-" * 50)
     
