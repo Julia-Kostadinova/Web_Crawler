@@ -49,10 +49,3 @@ except mysql.connector.Error as err:
 finally:
     if connection is not None:
         connection.close()
-
-# Извикване на crawler-a
-products = crawler()
-
-#Извикване на scrapper-a
-for product in products:
-    scrapper.extract_data(product)
