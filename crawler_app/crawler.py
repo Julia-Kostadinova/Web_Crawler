@@ -6,17 +6,8 @@ format_str = '%(name)s:%(levelname)s:%(message)s'
 logging.basicConfig(format=format_str, level=logging.INFO)
 logger = logging.getLogger('crawler')
 
-
+# Извлича и връща HTML съдържанието от даден URL адрес.
 def get_html(url: str) -> str:
-    """
-    Извлича и връща HTML съдържанието от даден URL адрес.
-
-    Аргументи:
-        url (str): URL адресът на уеб страницата.
-
-    Връща:
-        str: HTML съдържанието на уеб страницата или None, ако възникне грешка.
-    """
     try:
         response = requests.get(url, timeout=8)
     except requests.exceptions.RequestException as e:
@@ -31,18 +22,8 @@ def get_html(url: str) -> str:
         return None
 
 
-
+# Записва HTML съдържанието във файл.
 def save_html(html: str, filename: str) -> None:
-    """
-    Записва HTML съдържанието във файл.
-
-    Аргументи:
-        html (str): HTML съдържанието за записване.
-        filename (str): Име на файла, в който да се запише HTML съдържанието.
-
-    Връща:
-        None
-    """
     try:
         with open(filename, "w", encoding="utf-8") as f:
             f.write(html)
@@ -50,8 +31,7 @@ def save_html(html: str, filename: str) -> None:
         logger.error(f"Failed to save HTML: {filename}")
         logger.exception(e)
 
-
-
+        
     with open(filename, "w", encoding="utf-8") as f:
         f.write(html)
 
