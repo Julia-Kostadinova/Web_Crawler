@@ -30,7 +30,7 @@ except mysql.connector.Error as err:
             CREATE TABLE products (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 model VARCHAR(255) NOT NULL,
-                screen_size DECIMAL(5,2) NOT NULL,
+                screen_size VARCHAR(255) NOT NULL,
                 price DECIMAL(10,2) NOT NULL
             );
         """)
@@ -50,3 +50,5 @@ except mysql.connector.Error as err:
 finally:
     if connection is not None:
         connection.close()
+
+

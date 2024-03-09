@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
-import requests
-import logging
+import mysql.connector
 
 # Отваряне на HTML файла
 with open("output.html", "r", encoding="utf-8") as f:
@@ -12,35 +11,34 @@ soup = BeautifulSoup(html_code, "html.parser")
 # Намиране на всички елементи с продукти
 products = soup.select(".sProduct")
 
+# Информация за свързване
+db_host = "localhost"
+db_user = "root"
+db_password = "Julia132293@"
+
+# Свързване с базата данни
+connection = mysql.connector.connect(
+    host=db_host, user=db_user, password=db_password, database="laptop_base"
+)
+
 # Итерация през продуктите
 for product in products:
-
-    # Извличане на модела
     model_element = product.select_one(".short_title.fn a")
-    if model_element:
-        model = model_element.text.split(" ")[1]
-    else:
-        # Обработка на липсващ елемент
-        model = "Няма информация"
-
-    # Извличане на размера на екрана
+    model = model_element.text.split(" ")[1] if model_element else "Няма информация"
+    
     screen_size_element = product.select_one(".pprop li:nth-child(3) span")
-    if screen_size_element:
-        screen_size = screen_size_element.text
-    else:
-        # Обработка на липсващ елемент
-        screen_size = "Няма информация"
-
-    # Извличане на цената
+    screen_size = float(screen_size_element.text) if (screen_size_element and screen_size_element.text.isdigit()) else 0
+    
     price_element = product.select_one(".row-price .price")
-    if price_element:
-        price = price_element.text
-    else:
-        # Обработка на липсващ елемент
-        price = "Няма информация"
+    price = float(price_element.text.replace(" лв", "").replace(",", ".")) if (price_element and price_element.text.replace(" лв", "").replace(",", ".").replace(".", "", 1).isdigit()) else 0
 
-    # Принтиране на резултатите
-    print(f"**Модел:** {model}")
-    print(f"**Размер на екрана:** {screen_size}")
-    print(f"**Цена:** {price}")
-    print("-" * 20)
+    # Вмъкване на данните в базата данни
+    cursor = connection.cursor()
+    sql = "INSERT INTO products (model, screen_size, price) VALUES (%s, %s, %s)"
+    values = (model, screen_size, price)
+    cursor.execute(sql, values)
+    connection.commit()
+    cursor.close()
+
+# Затваряне на връзката с базата данни
+connection.close()
