@@ -19,49 +19,33 @@ db_password = "Julia132293@"
 # Проверка за съществуване на база данни
 try:
     connection = mysql.connector.connect(
-        host=db_host, user=db_user, password=db_password, database="laptop_base_final_1"
+        host=db_host, user=db_user, password=db_password, database="laptop_base_final_3"
     )
-    print("Базата данни 'laptop_base_final_1' съществува.")
+    print("Базата данни 'laptop_base_final_3' съществува.")
     # Изпълнете код, който използва базата данни
 
 except mysql.connector.Error as err:
     if err.errno == 1049:  # Database doesn't exist
-        print("Базата данни 'laptop_base_final_1' не съществува.")
+        print("Базата данни 'laptop_base_final_3' не съществува.")
         # Създайте базата данни и таблицата
         connection = mysql.connector.connect(
             host=db_host, user=db_user, password=db_password
         )
         cursor = connection.cursor()
-        cursor.execute("CREATE DATABASE IF NOT EXISTS laptop_base_final_1")
-        cursor.execute("USE laptop_base_final_1")
+        cursor.execute("CREATE DATABASE IF NOT EXISTS laptop_base_final_3")
+        cursor.execute("USE laptop_base_final_3")
         cursor.execute("""
-            CREATE TABLE products_final_1 (
+            CREATE TABLE products_final_3 (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 model VARCHAR(255) NOT NULL,
                 screen_size VARCHAR(255) NOT NULL,
                 price DECIMAL(10,2) NOT NULL
             );
         """)
-        cursor.close()
-        connection.close()
-
-        # Свързване с новосъздадената база данни
-        connection = mysql.connector.connect(
-            host=db_host, user=db_user, password=db_password, database="laptop_base_final_1"
-        )
-        print("Създадена е базата данни 'laptop_base_final_1'.")
-
-    else:
-        print(f"Грешка при свързване: {err}")
-
-# Затваряне на връзката
-finally:
-    if connection is not None:
-        connection.close()
 
 # Свързване с базата данни
 connection = mysql.connector.connect(
-    host=db_host, user=db_user, password=db_password, database="laptop_base_final_1"
+    host=db_host, user=db_user, password=db_password, database="laptop_base_final_3"
 )
 
 # Итерация през продуктите
@@ -77,7 +61,7 @@ for product in products:
 
     # Вмъкване на данните в базата данни
     cursor = connection.cursor()
-    sql = "INSERT INTO products_final_1 (model, screen_size, price) VALUES (%s, %s, %s)"
+    sql = "INSERT INTO products_final_3 (model, screen_size, price) VALUES (%s, %s, %s)"
     values = (model, screen_size, price)
     cursor.execute(sql, values)
     connection.commit()
