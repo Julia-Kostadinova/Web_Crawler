@@ -1,7 +1,8 @@
-from crawler_app import crawler
-from crawler_app import scrapper
+import crawler_app.crawler
+import crawler_app.scrapper
 import mysql.connector
 
+    
 # Информация за свързване
 db_host = "localhost"
 db_user = "root"
